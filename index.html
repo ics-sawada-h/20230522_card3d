@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Title</title>
+  <style>
+    :root {
+      --imageSize: 260px;
+    }
+
+    body {
+      margin: 0;
+      position: relative;
+    }
+
+    .wrapper {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: lightsteelblue;
+      perspective: 1000px;
+    }
+
+    .noise {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("./images/noise.png");
+      background-size: 200px;
+      mix-blend-mode: color-burn;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      width: var(--imageSize);
+      height: 324px;
+      padding: 24px;
+      background-color: aliceblue;
+      box-shadow: -30px 30px 24px 16px rgb(0 0 0 / 15%);
+      transition: all 0.4s ease-out;
+    }
+
+    .card div {
+      position: absolute;
+      width: var(--imageSize);
+      transition: all 0.4s ease-out;
+    }
+
+    .card_bg {
+      height: var(--imageSize);
+      background-image: url("./images/card_bg.png");
+      background-size: contain;
+    }
+
+    .card_flowerWrapper {
+      height: var(--imageSize);
+      overflow: hidden;
+    }
+
+    .card_flower {
+      height: 324px;
+      background-image: url("./images/card_flower.png");
+      background-size: contain;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="card">
+    <div class="card_bg"></div>
+    <div class="card_flowerWrapper">
+      <div class="card_flower"></div>
+    </div>
+  </div>
+</div>
+<div class="noise"></div>
+</body>
+
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    init();
+  });
+
+  const init = () => {
+    const card = document.querySelector(".card");
+    const cardFlower = document.querySelector(".card_flower");
+
+    card.addEventListener("mousemove", (e) => {
+      const mouseX = window.innerWidth / 2 - e.pageX;
+      const mouseY = window.innerHeight / 2 - e.pageY;
+
+      card.style.transform = `rotateX(${mouseY / -24}deg) rotateY(${mouseX / 24}deg) scale(1.1)`;
+      cardFlower.style.translate = `${mouseX / 30}px ${mouseY / -30}px`;
+    });
+
+    card.addEventListener("mouseover", () => {
+      card.style.boxShadow = "-45px 45px 36px 24px rgb(0 0 0 / 15%)";
+    });
+
+    card.addEventListener("mouseout", () => {
+      card.style.boxShadow = "-30px 30px 24px 16px rgb(0 0 0 / 15%)";
+      card.style.transform = "rotate(0deg)";
+      cardFlower.style.translate = "0";
+    });
+  }
+</script>
+</html>
